@@ -7,13 +7,33 @@ use Inertia\Inertia;
 
 class UserController extends Controller
 {
-    public function index()
-    {
-      return Inertia::render('Users/Index', [
-    'users' => User::paginate(10),
-        ]);
+  public function index(Request $request)
+{
+    $query = User::query();
 
+    // Search filter
+    if ($request->filled('search')) {
+        $query->where(function ($q) use ($request) {
+            $q->where('name', 'like', '%' . $request->search . '%')
+              ->orWhere('email', 'like', '%' . $request->search . '%');
+        });
     }
+
+    // Status filter (active/inactive)
+    if ($request->filled('status')) {
+        $query->where('status', $request->status === 'active');
+    }
+
+    // Role filter
+    if ($request->filled('type')) {
+        $query->where('type', $request->type);
+    }
+
+    return Inertia::render('Users/Index', [
+        'filters' => $request->only(['search', 'status', 'type']),
+        'users' => $query->paginate(10)->withQueryString()
+    ]);
+}
 
     public function create()
     {

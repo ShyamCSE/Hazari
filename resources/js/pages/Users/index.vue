@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { Head, router, usePage } from '@inertiajs/vue3'
+import { ref, watch } from 'vue'
 import AppLayout from '@/layouts/AppLayout.vue'
 import { type BreadcrumbItem, type User } from '@/types'
 
 const page = usePage()
 const users = page.props.users?.data ?? []
-
-
 const pagination = page.props.users
+const filters = ref({ ...page.props.filters })
 
 const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Users List', href: '/users' }
@@ -32,6 +32,13 @@ function toggleStatus(user: User) {
     status: user.status === 'active' ? 'inactive' : 'active'
   })
 }
+
+watch(filters, (newFilters) => {
+  router.get('/users', newFilters, {
+    preserveState: true,
+    replace: true,
+  })
+}, { deep: true })
 </script>
 
 <template>
@@ -39,13 +46,41 @@ function toggleStatus(user: User) {
     <Head title="Users List" />
 
     <div class="p-6">
-      <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center justify-between mb-6">
         <h2 class="text-2xl font-semibold text-gray-800 dark:text-white">User List</h2>
         <button @click="goToCreate" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-4 py-2 rounded shadow">
           Add New
         </button>
       </div>
 
+      <!-- Filter Bar -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <input
+          type="text"
+          v-model="filters.search"
+          placeholder="Search by name or email"
+          class="p-2 border rounded w-full"
+        />
+
+        <select v-model="filters.status" class="p-2 border rounded w-full">
+          <option value="">All Status</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+
+        <select v-model="filters.type" class="p-2 border rounded w-full">
+          <option value="">All Roles</option>
+          <option value="1">Admin</option>
+          <option value="0">User</option>
+        </select>
+      </div>
+<a
+  href="/users/export"
+  class="bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-4 py-2 rounded shadow mb-4 inline-block"
+>
+  Export to Excel
+</a>
+      <!-- User Table -->
       <div class="overflow-x-auto rounded border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
         <table class="min-w-full text-sm">
           <thead class="bg-gray-100 dark:bg-gray-800">
@@ -77,6 +112,7 @@ function toggleStatus(user: User) {
         </table>
       </div>
 
+      <!-- Pagination -->
       <div class="flex justify-center mt-6 space-x-2">
         <template v-for="link in pagination.links" :key="link.label">
           <button

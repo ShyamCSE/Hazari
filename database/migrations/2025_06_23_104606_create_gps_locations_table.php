@@ -17,7 +17,7 @@ return new class extends Migration
         $table->string('location_name');
         $table->decimal('latitude', 10, 7);
         $table->decimal('longitude', 10, 7);
-        $table->float('radius')->default(50); // in meters
+        $table->float('radius')->default(50);
 
         $table->timestamps();
 
