@@ -11,15 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('device_logs', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->string('device_id')->nullable();
-            $table->ipAddress('ip_address')->nullable();
-            $table->timestamps();
+   Schema::create('device_logs', function (Blueprint $table) {
+    $table->id();
+    $table->unsignedBigInteger('user_id');
+    $table->string('device_id')->nullable(); // Optional, if used
+    $table->string('device_name')->nullable(); // ✅ Add this
+    $table->string('platform')->nullable(); // ✅ Add this
+    $table->string('browser')->nullable(); // ✅ Add this
+    $table->ipAddress('ip_address')->nullable();
+    $table->timestamp('last_login_at')->nullable(); // ✅ Add this
+    $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-        });
+    $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+});
+
     }
 
     /**

@@ -9,16 +9,48 @@ import { BookOpen, Folder, LayoutGrid } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
 const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: '/dashboard',
-        icon: LayoutGrid,
-    },{
-        title: 'Users',
-        href: '/users',
-        icon: LayoutGrid,
-    },
-];
+  {
+    title: 'Dashboard',
+    href: '/dashboard',
+    icon: LayoutGrid,
+  },
+  {
+    title: 'Users',
+    href: '/users',
+    icon: LayoutGrid,
+  },
+  {
+    title: 'Attendance Logs',
+    href: '/attendance',
+    icon: BookOpen,
+  },
+  {
+    title: 'Manual Attendance',
+    href: '/manual-attendance',
+    icon: BookOpen,
+  },
+  {
+    title: 'Wi-Fi Attendance',
+    href: '/wifi-attendance',
+    icon: BookOpen,
+  },
+  {
+    title: 'GPS Attendance',
+    href: '/gps-attendance',
+    icon: BookOpen,
+  },
+  {
+    title: 'Device Logs',
+    href: '/device-logs',
+    icon: Folder,
+  },
+  {
+    title: 'Reports',
+    href: '/reports',
+    icon: Folder,
+  }
+]
+
 
 // const footerNavItems: NavItem[] = [
 //     {

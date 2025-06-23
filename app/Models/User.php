@@ -46,4 +46,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    protected $casts = [
+        'status' => 'boolean',
+        'type' => 'integer',
+        ];
+
+
 }

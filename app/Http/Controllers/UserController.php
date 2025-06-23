@@ -1,39 +1,49 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\Attendance;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class UserController extends Controller
 {
-  public function index(Request $request)
-{
-    $query = User::query();
 
-    // Search filter
-    if ($request->filled('search')) {
-        $query->where(function ($q) use ($request) {
-            $q->where('name', 'like', '%' . $request->search . '%')
-              ->orWhere('email', 'like', '%' . $request->search . '%');
-        });
+        public function dashboard()
+    {
+        $attendances = Attendance::with('user')->latest()->take(5)->get();
+
+        return Inertia::render('Dashboard', [
+            'recentAttendances' => $attendances,
+        ]);
     }
 
-    // Status filter (active/inactive)
-    if ($request->filled('status')) {
-        $query->where('status', $request->status === 'active');
-    }
+    public function index(Request $request)
+    {
+        $query = User::latest();
 
-    // Role filter
-    if ($request->filled('type')) {
-        $query->where('type', $request->type);
-    }
+        // Filters
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%')
+                ->orWhere('email', 'like', '%' . $request->search . '%');
+            });
+        }
 
-    return Inertia::render('Users/Index', [
+        if ($request->filled('status')) {
+            $query->where('status', $request->status === '1');
+        }
+
+        if ($request->filled('type')) {
+            $query->where('type', (int) $request->type); // Ensure proper casting
+        }
+
+      return Inertia::render('Users/Index', [
         'filters' => $request->only(['search', 'status', 'type']),
-        'users' => $query->paginate(10)->withQueryString()
+        'users' => $query->latest()->paginate(10)->withQueryString(),
     ]);
-}
+
+    }
 
     public function create()
     {
@@ -47,7 +57,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
         ]);
 
-        $validated['status'] = 'active';
+        $validated['status'] = 1;
         User::create($validated);
 
         return redirect()->route('users.index')->with('success', 'User created successfully.');
@@ -77,7 +87,7 @@ class UserController extends Controller
 
     public function toggleStatus(User $user)
     {
-        $user->status = $user->status === 'active' ? 'inactive' : 'active';
+        $user->status = $user->status === 1 ? 0 : 1;
         $user->save();
 
         return back()->with('success', 'User status updated.');

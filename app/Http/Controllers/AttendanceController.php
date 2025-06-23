@@ -8,13 +8,18 @@ use Inertia\Inertia;
 
 class AttendanceController extends Controller
 {
-    public function index()
-{
-    $attendances = Attendance::with('user')->latest()->paginate(10);
+        public function index()
+    {
+        $attendances = Attendance::with('user')->latest()->paginate(10);
 
-    return Inertia::render('admin/Attendance/Index', [
-        'attendances' => $attendances,
-    ]);
-}
+        return Inertia::render('Attendance/Index', [
+            'attendances' => $attendances,
+        ]);
+    }
+
+
+    public function logs() {
+        return Inertia::render('Attendance/Logs');
+    }
 
 }
