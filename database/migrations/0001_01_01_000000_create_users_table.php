@@ -17,6 +17,13 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('country_code', 5);
+            $table->string('mobile', 20)->nullable();
+            $table->boolean('status')->default(true);
+            $table->tinyInteger('type')->default(0)->comment("0 => user, 1 => admin");
+            $table->unsignedBigInteger('admin_id')->nullable();
+            $table->foreign('admin_id')->references('id')->on('users')->onDelete('set null');
+            $table->unique(['country_code', 'mobile']);
             $table->rememberToken();
             $table->timestamps();
         });
