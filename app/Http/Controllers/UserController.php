@@ -5,18 +5,29 @@ use App\Models\Attendance;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-
+use Carbon\Carbon;
 class UserController extends Controller
 {
 
-        public function dashboard()
-    {
-        $attendances = Attendance::with('user')->latest()->take(5)->get();
+ public function dashboard()
+{
+    $today = Carbon::today()->toDateString();
 
-        return Inertia::render('Dashboard', [
-            'recentAttendances' => $attendances,
-        ]);
-    }
+    $totalUsers = User::count();
+    $presentToday = Attendance::whereDate('date', $today)->count();
+    $activeUsers = User::where('status', true)->count();
+
+    $attendances = Attendance::with('user')->latest()->take(5)->get();
+
+  return Inertia::render('Dashboard', [
+    'stats' => [
+        'totalUsers' => $totalUsers,
+        'presentToday' => $presentToday,
+        'activeUsers' => $activeUsers,
+    ],
+    'recentAttendances' => $attendances,
+]);
+}
 
     public function index(Request $request)
     {
