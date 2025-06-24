@@ -31,18 +31,19 @@ use Maatwebsite\Excel\Facades\Excel;
     Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
     Route::get('/attendance-logs', [AttendanceController::class, 'logs'])->name('attendance.logs');
 
-    Route::prefix('wifi-attendance')->name('admin.wifi.')->group(function () {
+    Route::prefix('wifi-attendance')->group(function () {
         Route::get('/', [WifiLocationController::class, 'index'])->name('index');
         Route::get('/create', [WifiLocationController::class, 'create'])->name('create');
         Route::post('/', [WifiLocationController::class, 'store'])->name('store');
     });
 
     // GPS Attendance
-    Route::prefix('gps-attendance')->name('admin.gps.')->group(function () {
-        Route::get('/', [GpsLocationController::class, 'index'])->name('index');
-        Route::get('/create', [GpsLocationController::class, 'create'])->name('create');
-        Route::post('/', [GpsLocationController::class, 'store'])->name('store');
-    });
+        Route::prefix('gps-attendance')->name('gps-attendance.')->group(function () {
+            Route::get('/', [GpsLocationController::class, 'index'])->name('index');
+            Route::get('/create', [GpsLocationController::class, 'create'])->name('create');
+            Route::post('/', [GpsLocationController::class, 'store'])->name('store');
+        });
+
 
     Route::get('/device-logs', [DeviceLogController::class, 'index'])->name('device.logs');
 

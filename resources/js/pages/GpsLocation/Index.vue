@@ -1,16 +1,16 @@
-<script setup>
+<script setup lang="ts">
 import { router, usePage } from '@inertiajs/vue3'
 import AppLayout from '@/layouts/AppLayout.vue'
 
 const { locations } = usePage().props
 
 function goToCreate() {
-  router.visit('/admin/gps/create')
+  router.visit('/gps-attendance/create')
 }
 </script>
 
 <template>
-  <AppLayout :breadcrumbs="[{ title: 'GPS Locations', href: '/admin/gps' }]">
+  <AppLayout :breadcrumbs="[{ title: 'GPS Locations', href: '/gps' }]">
     <div class="p-6">
       <div class="flex justify-between mb-4">
         <h2 class="text-xl font-semibold">GPS Locations</h2>

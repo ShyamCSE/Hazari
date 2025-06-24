@@ -31,7 +31,7 @@ function deleteUser(id: number) {
 
 function toggleStatus(user: User) {
   router.put(`/users/${user.id}/status`, {
-    status: user.status === 'active' ? 'inactive' : 'active'
+    status: user.status === 1 ? 0 : 1
   })
 }
 

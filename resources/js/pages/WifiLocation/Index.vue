@@ -5,7 +5,7 @@ import AppLayout from '@/layouts/AppLayout.vue'
 const { locations } = usePage().props
 
 function goToCreate() {
-  router.visit('/admin/wifi/create')
+  router.visit('/wifi-attendance/create')
 }
 </script>
 

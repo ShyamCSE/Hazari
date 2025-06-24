@@ -1,11 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import { router, usePage } from '@inertiajs/vue3'
 import AppLayout from '@/layouts/AppLayout.vue'
 
 const { requests } = usePage().props
 
 function handleAction(id, action) {
-  router.put(`/admin/manual-attendance/${id}`, { status: action })
+  router.put(`/manual-attendance/${id}`, { status: action })
 }
 </script>
 

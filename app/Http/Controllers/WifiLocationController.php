@@ -12,14 +12,14 @@ class WifiLocationController extends Controller
 {
     $locations = wifiLocation::where('admin_id', auth()->id())->paginate(10);
 
-    return Inertia::render('admin/WifiLocation/Index', [
+    return Inertia::render('WifiLocation/Index', [
         'locations' => $locations,
     ]);
 }
 
 public function create()
 {
-    return Inertia::render('admin/WifiLocation/Create');
+    return Inertia::render('WifiLocation/Create');
 }
 
 public function store(Request $request)
@@ -32,6 +32,6 @@ public function store(Request $request)
 
     WifiLocation::create([...$data, 'admin_id' => auth()->id()]);
 
-    return redirect()->route('admin.wifi.index');
+    return redirect()->route('WifiLocation.index');
 }
 }
