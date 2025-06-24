@@ -30,7 +30,7 @@ function submit() {
 
         <Head title="Edit User" />
 
-        <div class="max-w-xl mx-auto p-6 bg-white rounded-lg shadow space-y-6">
+      <div class="w-full max-w-3xl mx-auto p-6 md:p-10 bg-white dark:bg-gray-900 rounded-2xl shadow space-y-6">
             <h2 class="text-2xl font-bold">Edit User</h2>
 
             <div>

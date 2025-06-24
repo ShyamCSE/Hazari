@@ -32,11 +32,14 @@ function deleteUser(id: number) {
 function toggleStatus(user: User) {
   router.put(`/users/${user.id}/status`, {
     status: user.status === 1 ? 0 : 1
+  }, {
+    preserveScroll: true,
+    preserveState: true
   })
 }
 
 function resetFilters() {
-  filters.value = { search: '', status: '', type: '' }
+  filters.value = { search: '', status: '' }
   router.get('/users', filters.value, {
     preserveState: true,
     replace: true,
@@ -80,72 +83,94 @@ watch(filters, async (newFilters) => {
           class="p-2 border rounded w-full"
         />
 
-        <select v-model="filters.status" class="p-2 border rounded w-full">
-          <option value="" selected >All Status</option>
-          <option value="1">Active</option>
-          <option value="0">Inactive</option>
-        </select>
+        <select v-model="filters.status" class="p-2 border rounded w-full bg-white dark:bg-gray-900">
+            <option value="">All Status</option>
+            <option value="1">Active</option>
+            <option value="0">Inactive</option>
+            </select>
 
-        <select v-model="filters.type" class="p-2 border rounded w-full">
-          <option value="" selected>All Roles</option>
-          <option value="1">Admin</option>
-          <option value="0">User</option>
-        </select>
+
 
         <button @click="resetFilters" class="text-sm underline text-gray-600">Reset Filters</button>
       </div>
 
       <!-- Loading -->
-      <div v-if="isLoading" class="text-center py-6 text-gray-500">Loading...</div>
+
 
       <!-- User Table -->
-      <div v-else class="overflow-x-auto border border-gray-200 dark:border-gray-700 rounded bg-white dark:bg-gray-900">
+      <div class="overflow-x-auto border border-gray-200 dark:border-gray-700 rounded bg-white dark:bg-gray-900">
         <table class="min-w-full text-sm">
           <thead class="bg-gray-100 dark:bg-gray-800">
             <tr>
-              <th class="px-6 py-3 text-left font-bold">ID</th>
+              <th class="px-6 py-3 text-left font-bold">S.No.</th>
               <th class="px-6 py-3 text-left font-bold">Name</th>
               <th class="px-6 py-3 text-left font-bold">Email</th>
               <th class="px-6 py-3 text-left font-bold">Status</th>
               <th class="px-6 py-3 text-left font-bold">Actions</th>
             </tr>
           </thead>
-          <tbody>
-            <tr v-for="user in users" :key="user.id" class="border-t dark:border-gray-700">
-              <td class="px-6 py-4">{{ user.id }}</td>
+          <!-- <div v-if="isLoading" class="text-center py-6 text-gray-500">...</div> -->
+          <tbody   >
+            <tr v-for="(user, index) in users" :key="user.id" class="border-t dark:border-gray-700">
+              <td class="px-6 py-4">{{ index + 1 }}</td>
               <td class="px-6 py-4">{{ user.name }}</td>
               <td class="px-6 py-4">{{ user.email }}</td>
               <td class="px-6 py-4">
-                <span :class="user.status === '1' ? 'text-green-600' : 'text-red-600'">
-                  {{ user.status }}
-                </span>
-              </td>
-              <td class="px-6 py-4 flex space-x-3">
-                <button @click="goToEdit(user.id)" class="text-blue-600 hover:underline">Edit</button>
-                <button @click="deleteUser(user.id)" class="text-red-600 hover:underline">Delete</button>
-                <button @click="toggleStatus(user)" class="text-yellow-600 hover:underline">
-                  {{ user.status === 1 ? 'Deactivate' : 'Activate' }}
+                <label class="inline-flex items-center cursor-pointer">
+                    <input
+                    type="checkbox"
+                    class="sr-only peer"
+                    :checked="user.status == 1"
+                    @change="toggleStatus(user)"
+                    />
+                    <div
+                    class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-green-500 transition-all"
+                    ></div>
+                    <div
+                    class="absolute ml-1 mt-0.5 h-5 w-5 bg-white rounded-full shadow transform transition-transform peer-checked:translate-x-5"
+                    ></div>
+                    <span class="ml-3 text-sm text-gray-600 dark:text-gray-300">
+                    {{ user.status == 1 ? 'Active' : 'Inactive' }}
+                    </span>
+                </label>
+                </td>
+
+               <td class="px-6 py-4 flex gap-2">
+                <button
+                    @click="goToEdit(user.id)"
+                    class="inline-flex items-center px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-md transition"
+                >
+                    Edit
                 </button>
-              </td>
+                <button
+                    @click="deleteUser(user.id)"
+                    class="inline-flex items-center px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-sm rounded-md transition"
+                >
+                    Delete
+                </button>
+                </td>
+
+
             </tr>
           </tbody>
         </table>
       </div>
 
-      <!-- Pagination -->
+         <!-- Pagination -->
       <div class="flex justify-center mt-4 space-x-2">
-        <template v-for="link in pagination.links" :key="link.label">
-          <button
-            v-if="link.url"
-            @click="router.visit(link.url)"
-            :class="[
-              'px-3 py-1 rounded text-sm',
-              link.active ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            ]"
-            v-html="link.label"
-          ></button>
-        </template>
+        <button
+          v-for="link in users.links"
+          :key="link.label"
+          v-html="link.label"
+          @click="link.url && router.visit(link.url)"
+          :class="[
+            'px-3 py-1 rounded',
+            link.active ? 'bg-indigo-600 text-white' : 'bg-gray-200 hover:bg-gray-300'
+          ]"
+        />
       </div>
+
+
     </div>
   </AppLayout>
 </template>

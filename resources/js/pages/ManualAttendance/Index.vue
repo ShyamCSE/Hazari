@@ -10,7 +10,7 @@ function handleAction(id, action) {
 </script>
 
 <template>
-  <AppLayout :breadcrumbs="[{ title: 'Manual Requests', href: '/admin/manual-attendance' }]">
+  <AppLayout :breadcrumbs="[{ title: 'Manual Requests', href: '/manual-attendance' }]">
     <div class="p-6">
       <h2 class="text-2xl font-semibold mb-4">Manual Attendance Requests</h2>
 

@@ -5,49 +5,47 @@ import NavUser from '@/components/NavUser.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-vue-next';
+import {
+  LayoutDashboard,
+  FileBarChart,
+  Users2,
+  Edit3,
+  Wifi,
+  MapPin
+} from 'lucide-vue-next'
+
 import AppLogo from './AppLogo.vue';
 
 const mainNavItems: NavItem[] = [
   {
     title: 'Dashboard',
     href: '/dashboard',
-    icon: LayoutGrid,
-  },
-  {
-    title: 'Users',
-    href: '/users',
-    icon: LayoutGrid,
-  },
-  {
-    title: 'Attendance Logs',
-    href: '/attendance',
-    icon: BookOpen,
-  },
-  {
-    title: 'Manual Attendance',
-    href: '/manual-attendance',
-    icon: BookOpen,
-  },
-  {
-    title: 'Wi-Fi Attendance',
-    href: '/wifi-attendance',
-    icon: BookOpen,
-  },
-  {
-    title: 'GPS Attendance',
-    href: '/gps-attendance',
-    icon: BookOpen,
-  },
-  {
-    title: 'Device Logs',
-    href: '/device-logs',
-    icon: Folder,
+    icon: LayoutDashboard,
   },
   {
     title: 'Reports',
-    href: '/reports',
-    icon: Folder,
+    href: '/attendance',
+    icon: FileBarChart,
+  },
+  {
+    title: 'User Management',
+    href: '/users',
+    icon: Users2,
+  },
+  {
+    title: 'Manual Entry',
+    href: '/manual-attendance',
+    icon: Edit3,
+  },
+  {
+    title: 'Wi-Fi Zones',
+    href: '/wifi-attendance',
+    icon: Wifi,
+  },
+  {
+    title: 'GPS Zones',
+    href: '/gps-attendance',
+    icon: MapPin,
   }
 ]
 

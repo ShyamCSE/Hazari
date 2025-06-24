@@ -115,6 +115,7 @@ const breadcrumbs: BreadcrumbItem[] = [
       >
         {{ manualSetup ? 'Configured' : 'Not Set' }}
       </span>
+
     </div>
   </div>
 

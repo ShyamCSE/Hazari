@@ -11,7 +11,7 @@ class GpsLocationController extends Controller
    // app/Http/Controllers/Admin/GpsLocationController.php
 public function index()
 {
-    $locations = gpsLocation::where('admin_id', auth()->id())->paginate(10);
+    $locations = gpsLocation::where('admin_id', auth()->id())->paginate(5);
 
     return Inertia::render('GpsLocation/Index', [
         'locations' => $locations,

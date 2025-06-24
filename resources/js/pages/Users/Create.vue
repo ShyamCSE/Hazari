@@ -26,7 +26,7 @@ function submit() {
 
         <Head title="Create User" />
 
-        <div class="max-w-xxl mx-auto p-8 bg-white rounded-lg shadow space-y-8">
+       <div class="w-full max-w-3xl mx-auto p-6 md:p-10 bg-white dark:bg-gray-900 rounded-2xl shadow space-y-6">
             <h2 class="text-2xl font-bold">Create User</h2>
 
             <div>

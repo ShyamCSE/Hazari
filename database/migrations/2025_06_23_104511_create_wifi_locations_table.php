@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('ssid');
             $table->string('location_name');
             $table->string('mac_address')->nullable();
+            $table->boolean('status')->default(true);
             $table->timestamps();
 
             $table->foreign('admin_id')->references('id')->on('users')->onDelete('cascade');

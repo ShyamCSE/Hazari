@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+
 class UserController extends Controller
 {
 
@@ -31,7 +33,7 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $query = User::latest();
+ $query = User::where('admin_id', Auth::id());
 
         // Filters
         if ($request->filled('search')) {
@@ -41,18 +43,17 @@ class UserController extends Controller
             });
         }
 
-        if ($request->filled('status')) {
-            $query->where('status', $request->status === '1');
-        }
+   if ($request->filled('status')) {
+    $query->where('status', $request->status);
+}
 
-        if ($request->filled('type')) {
-            $query->where('type', (int) $request->type); // Ensure proper casting
-        }
+     $users = $query->latest()->paginate(10)->withQueryString();
 
-      return Inertia::render('Users/Index', [
-        'filters' => $request->only(['search', 'status', 'type']),
-        'users' => $query->latest()->paginate(10)->withQueryString(),
-    ]);
+
+  return Inertia::render('Users/Index', [
+    'filters' => $request->only(['search', 'status']),
+    'users' => $users,
+]);
 
     }
 
@@ -66,9 +67,13 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:8',
+            'mobile' => 'nullable'
         ]);
 
         $validated['status'] = 1;
+        $validated['country_code'] = Auth::User()->country_code;
+        $validated['admin_id'] = Auth::User()->id;
         User::create($validated);
 
         return redirect()->route('users.index')->with('success', 'User created successfully.');
@@ -98,7 +103,7 @@ class UserController extends Controller
 
     public function toggleStatus(User $user)
     {
-        $user->status = $user->status === 1 ? 0 : 1;
+        $user->status = $user->status == 1 ? 0 : 1;
         $user->save();
 
         return back()->with('success', 'User status updated.');

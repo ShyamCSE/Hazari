@@ -47,8 +47,8 @@ use Maatwebsite\Excel\Facades\Excel;
 
     Route::get('/device-logs', [DeviceLogController::class, 'index'])->name('device.logs');
 
-    Route::get('manual-attendance', [ManualAttendanceRequestController::class,'index'])->name('admin.manual.index');
-    Route::put('manual-attendance/{manualAttendanceRequest}', [ManualAttendanceRequestController::class, 'update'])->name('admin.manual.update');
+    Route::get('manual-attendance', [ManualAttendanceRequestController::class,'index'])->name('manual.index');
+    Route::put('manual-attendance/{manualAttendanceRequest}', [ManualAttendanceRequestController::class, 'update'])->name('manual.update');
 
     Route::get('/users/export', function () {
         return Excel::download(new UsersExport, 'users.xlsx');

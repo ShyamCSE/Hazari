@@ -18,7 +18,7 @@ return new class extends Migration
         $table->decimal('latitude', 10, 7);
         $table->decimal('longitude', 10, 7);
         $table->float('radius')->default(50);
-
+        $table->boolean('status')->default(true);
         $table->timestamps();
 
         $table->foreign('admin_id')->references('id')->on('users')->onDelete('cascade');

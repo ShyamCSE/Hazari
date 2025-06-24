@@ -17,7 +17,7 @@ public function index()
         ->latest()
         ->paginate(10);
 
-    return Inertia::render('admin/ManualAttendance/Index', [
+    return Inertia::render('ManualAttendance/Index', [
         'requests' => $requests
     ]);
 }
